@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f4f6fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  max-width: 1100px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.sidebar {
+  background: linear-gradient(180deg, #013088, #0056b3);
+  color: #fff;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.profile-pic {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #fff; /* outer ring */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.profile-pic img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.sidebar h1 {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.sidebar h2 {
+  font-size: 14px;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.contact p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.skills {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.skills h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.skills ul {
+  list-style: none;
+}
+
+.skills li {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  font-size: 14px;
+}
+
+.content {
+  padding: 40px;
+}
+
+.content h2 {
+  font-size: 22px;
+  color: #013088;
+  margin-bottom: 15px;
+}
+
+.content section {
+  margin-bottom: 30px;
+}
+
+.job {
+  margin-bottom: 20px;
+}
+
+.job h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.time {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
