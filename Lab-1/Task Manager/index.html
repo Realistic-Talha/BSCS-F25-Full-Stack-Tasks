@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager - Modern UI</title>
+  <style>
+    :root {
+      --bg: #0a0a14;
+      --panel: rgba(20, 20, 35, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #00e5ff;
+      --accent2: #ff4d67;
+      --success: #2ed573;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --input-bg: rgba(25, 25, 45, 0.8);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      --glass-blur: blur(14px);
+      --glow: 0 0 18px rgba(0, 229, 255, 0.4);
+      --radius: 20px;
+      --transition: 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: radial-gradient(circle at 20% 20%, #111122 0%, #05050b 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .task-app {
+      width: 420px;
+      background: var(--panel);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .task-app::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: -100px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0,229,255,0.1), transparent 70%);
+      filter: blur(40px);
+      z-index: -1;
+    }
+
+    .task-app h1 {
+      font-size: 2.3rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-align: center;
+      color: var(--accent);
+      text-shadow: var(--glow);
+      margin: 0;
+    }
+
+    /* Input Row */
+    .task-input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .task-input-row input {
+      flex: 1;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 1rem;
+      border-radius: 12px;
+      padding: 12px 14px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .task-input-row input:focus {
+      border-color: var(--accent);
+      box-shadow: var(--glow);
+      transform: scale(1.02);
+    }
+
+    .task-input-row button {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      padding: 0 20px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .task-input-row button:hover {
+      background: #00c4e1;
+      box-shadow: var(--glow);
+      transform: scale(1.05);
+    }
+
+    /* Tasks List */
+    .tasks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 70px;
+    }
+
+    .empty-msg {
+      color: var(--muted);
+      text-align: center;
+      padding: 18px 0;
+      font-style: italic;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(25, 25, 45, 0.7);
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      border-radius: 14px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .task-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--accent);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .task-item:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15);
+    }
+
+    .task-item:hover::before {
+      opacity: 1;
+    }
+
+    .task-title {
+      flex: 1;
+      font-size: 1.05rem;
+      font-weight: 600;
+      word-break: break-word;
+      margin-right: 10px;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .task-actions button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 5px 8px;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+
+    .task-actions button:hover {
+      color: var(--accent);
+      background: rgba(0, 229, 255, 0.1);
+      transform: scale(1.2);
+    }
+
+    .task-actions .delete-btn:hover {
+      color: var(--accent2);
+      background: rgba(255, 77, 103, 0.1);
+    }
+
+    .edit-input {
+      flex: 1;
+      background: var(--input-bg);
+      border: 1px solid var(--accent);
+      color: var(--text);
+      font-size: 1rem;
+      border-radius: 10px;
+      padding: 10px;
+      outline: none;
+      box-shadow: var(--glow);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .task-app { width: 92vw; padding: 24px 16px; }
+      .task-app h1 { font-size: 1.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="task-app">
+    <h1>Task Manager</h1>
+    <form class="task-input-row" id="taskForm" autocomplete="off">
+      <input type="text" id="taskInput" placeholder="Add a new task..." maxlength="60" required>
+      <button type="submit">Add</button>
+    </form>
+    <div class="tasks-list" id="tasksList"></div>
+  </div>
+
+  <script>
+    const taskForm = document.getElementById('taskForm');
+    const taskInput = document.getElementById('taskInput');
+    const tasksList = document.getElementById('tasksList');
+    let tasks = [];
+    let editId = null;
+
+    function renderTasks() {
+      tasksList.innerHTML = '';
+      if (tasks.length === 0) {
+        tasksList.innerHTML = '<div class="empty-msg">✨ No tasks yet. Add your first one!</div>';
+        return;
+      }
+      tasks.forEach((task, idx) => {
+        const div = document.createElement('div');
+        div.className = 'task-item';
+        if (editId === idx) {
+          div.innerHTML = `
+            <input class="edit-input" type="text" value="${task}" maxlength="60" id="editInput${idx}">
+            <div class="task-actions">
+              <button class="save-btn" title="Save">&#10003;</button>
+              <button class="cancel-btn" title="Cancel">&#10005;</button>
+            </div>
+          `;
+        } else {
+          div.innerHTML = `
+            <span class="task-title">${task}</span>
+            <div class="task-actions">
+              <button class="edit-btn" title="Edit">&#9998;</button>
+              <button class="delete-btn" title="Delete">&#128465;</button>
+            </div>
+          `;
+        }
+        tasksList.appendChild(div);
+
+        if (editId === idx) {
+          const input = div.querySelector('.edit-input');
+          input.focus();
+          div.querySelector('.save-btn').onclick = () => {
+            const val = input.value.trim();
+            if (val) {
+              tasks[idx] = val;
+              editId = null;
+              renderTasks();
+            }
+          };
+          div.querySelector('.cancel-btn').onclick = () => {
+            editId = null;
+            renderTasks();
+          };
+          input.onkeydown = (e) => {
+            if (e.key === 'Enter') div.querySelector('.save-btn').click();
+            if (e.key === 'Escape') div.querySelector('.cancel-btn').click();
+          };
+        } else {
+          div.querySelector('.edit-btn').onclick = () => {
+            editId = idx;
+            renderTasks();
+          };
+          div.querySelector('.delete-btn').onclick = () => {
+            tasks.splice(idx, 1);
+            editId = null;
+            renderTasks();
+          };
+        }
+      });
+    }
+
+    taskForm.onsubmit = (e) => {
+      e.preventDefault();
+      const val = taskInput.value.trim();
+      if (val) {
+        tasks.push(val);
+        taskInput.value = '';
+        renderTasks();
+      }
+    };
+
+    renderTasks();
+  </script>
+</body>
+</html>
